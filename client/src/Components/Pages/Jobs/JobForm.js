@@ -3,7 +3,12 @@ import React from 'react'
 export default function JobForm() {
   return (
     <div><form>
-      <h3></h3>
+      <div>
+        <div>
+          <img alt='company-logo'></img>
+        </div>
+        <div><h3>Enter company name</h3></div>
+      </div>
       </form></div>
   )
 }
