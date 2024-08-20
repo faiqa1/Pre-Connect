@@ -8,8 +8,7 @@ export default function JobForm() {
         <div>
           <img alt='company-logo'></img>
         </div>
-        <div><h3>Enter company name</h3></div>
-        <div><h3>Job title</h3></div>
+       
       </div>
       </form>
       </div>
