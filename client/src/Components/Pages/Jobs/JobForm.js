@@ -6,7 +6,7 @@ export default function JobForm() {
       <form>
       <div>
         <div>
-          <img alt='company-logo'></img>
+         
         </div>
        
       </div>
