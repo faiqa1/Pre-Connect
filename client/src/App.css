@@ -51,8 +51,8 @@
   .jobCardWrapper {
 	transition: transform 0.3s ease-in-out; 
   }
-  .jobCardWrapper:hover {
-	transform: scale(1.05); 
+  .jobGridWrapper .jobCardWrapper:hover {
+	transform: scale(1.02); 
   }
   .navactiveLink  .navitemwrapper.active .text {
 	color: #0969c3!important; /* Change text color to blue */
