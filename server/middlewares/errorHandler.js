@@ -1,0 +1,7 @@
+const { constants } = require("../constant");
+const errorHandler = (err, req, res, next) => {
+  const statusCode = res.statusCode ? res.statusCode : 500;
+  
+};
+
+module.exports = errorHandler;
