@@ -4,12 +4,9 @@ const connectDb = async () => {
   try {
     const connect = await mongoose.connect(process.env.CONNECTION_STRING);
     console.log(
-      "Connected at: ",
-      connect.connection.host,
-      connect.connection.name
-    );
+      "Database Connected" );
   } catch (err) {
-    console.log(err);
+    console.log("Database not connected");
     process.exit(1);
   }
 };
