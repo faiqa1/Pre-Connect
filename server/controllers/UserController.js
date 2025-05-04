@@ -124,7 +124,7 @@ const loginUser = asyncHandler(async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,  // Ensure this is set in your environment variables
-      { expiresIn: "10m" }  // Token expiration time
+      { expiresIn: "3h" }  // Token expiration time
     );
 
     // Send back the token in response

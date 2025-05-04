@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaPencil } from 'react-icons/fa6';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-
-// Replace with your actual company and position data
-const companyOptions = ['Company A', 'Company B', 'Company C'];
-const positionOptions = ['Position X', 'Position Y', 'Position Z'];
+import axios from 'axios';
 
 const ExperienceForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,7 +15,36 @@ const ExperienceForm = () => {
   });
   const [experiences, setExperiences] = useState([]); // List of all submitted experiences
   const [errors, setErrors] = useState({});
+  const [companies, setCompanies] = useState([]); // For dropdown
+  const [positions, setPositions] = useState([]); // For dropdown
   const modalRef = useRef(null); // Create a ref for the modal
+
+  // Fetch companies, positions, and user's experiences on mount
+  useEffect(() => {
+    const fetchStaticData = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/static-data');
+        setCompanies(res.data.companies || []);
+        setPositions(res.data.positions || []);
+      } catch (err) {
+        // fallback: do nothing
+      }
+    };
+    const fetchExperiences = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const res = await axios.get('http://localhost:8080/api/profile/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = res.data.data || res.data;
+        setExperiences(data.experience || []);
+      } catch (err) {
+        // fallback: do nothing
+      }
+    };
+    fetchStaticData();
+    fetchExperiences();
+  }, []);
 
   const validateForm = () => {
     let errors = {};
@@ -38,14 +64,30 @@ const ExperienceForm = () => {
     return Object.keys(errors).length === 0; // Return true if no errors
   };
 
-  const onSubmit = (e) => {
+  // Submit to backend
+  const onSubmit = async (e) => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      // Add the new experience to the list of experiences
-      setExperiences([...experiences, formData]);
-      resetForm();
-      setShowModal(false);
+      try {
+        const token = localStorage.getItem('accessToken');
+        const payload = {
+          companyName: formData.companyName,
+          position: formData.position,
+          startDate: formData.startDate,
+          endDate: formData.currentlyWorking ? null : formData.endDate,
+          currentlyWorking: formData.currentlyWorking,
+        };
+        const res = await axios.post('http://localhost:8080/api/profile/experience', payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Update experiences list from response
+        setExperiences(res.data.data.experience || []);
+        resetForm();
+        setShowModal(false);
+      } catch (err) {
+        setErrors({ submit: 'Failed to add experience' });
+      }
     }
   };
 
@@ -90,14 +132,14 @@ const ExperienceForm = () => {
       </div>
 
       {experiences.map((experience, index) => (
-        <div className="mt-4" key={index}>
+        <div className="mt-4" key={experience._id || index}>
           <p><strong>Company Name:</strong> {experience.companyName}</p>
           <p><strong>Position:</strong> {experience.position}</p>
-          <p><strong>Start Date:</strong> {experience.startDate.toLocaleDateString()}</p>
+          <p><strong>Start Date:</strong> {experience.startDate ? new Date(experience.startDate).toLocaleDateString() : ''}</p>
           {experience.currentlyWorking ? (
             <p><strong>Present</strong></p>
           ) : (
-            <p><strong>End Date:</strong> {experience.endDate.toLocaleDateString()}</p>
+            <p><strong>End Date:</strong> {experience.endDate ? new Date(experience.endDate).toLocaleDateString() : ''}</p>
           )}
         </div>
       ))}
@@ -119,7 +161,7 @@ const ExperienceForm = () => {
                     onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                   >
                     <option value="">Select Company</option>
-                    {companyOptions.map((company) => (
+                    {companies.map((company) => (
                       <option key={company} value={company}>
                         {company}
                       </option>
@@ -138,7 +180,7 @@ const ExperienceForm = () => {
                     onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                   >
                     <option value="">Select Position</option>
-                    {positionOptions.map((position) => (
+                    {positions.map((position) => (
                       <option key={position} value={position}>
                         {position}
                       </option>
@@ -186,6 +228,8 @@ const ExperienceForm = () => {
                     <span className="ml-2">Currently Working</span>
                   </label>
                 </div>
+
+                {errors.submit && <div className="text-red-500">{errors.submit}</div>}
 
                 <div className="mt-6">
                   <button

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Avatar from "react-avatar";
@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import { FaPencil } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const ProfileForm = () => {
   Modal.setAppElement("#root");
@@ -31,6 +32,30 @@ const ProfileForm = () => {
   const [src, setSrc] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [imageModalIsOpen, setImageModalIsOpen] = useState(false);
+
+  // Fetch profile on mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await axios.get("http://localhost:8080/api/profile/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = res.data.data || res.data; // handle both {data: {}} and direct
+        setProfile({
+          profilePic: data.profilePic || null,
+          name: data.username || "Name",
+          headline: data.headline || "Headline",
+        });
+        setPreview(data.profilePic || null);
+      } catch (err) {
+        toast.error("Failed to load profile");
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const initialValues = {
     profilePic: "",
@@ -74,14 +99,35 @@ const ProfileForm = () => {
     setImageModalIsOpen(false);
   };
 
-  const handleProfileUpdate = (values) => {
-    setProfile({
-      profilePic: preview,
-      name: values.name,
-      headline: values.headline,
-    });
-    closeModal();
-    toast.success("Profile updated successfully");
+  // Update profile in backend
+  const handleProfileUpdate = async (values) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const res = await axios.put(
+        "http://localhost:8080/api/profile/update",
+        {
+          name: values.name,
+          headline: values.headline,
+          profilePic: preview, // base64 
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = res.data.data || res.data;
+      setProfile({
+        profilePic: data.profilePic || null,
+        name: data.username || "Name",
+        headline: data.headline || "Headline",
+      });
+      closeModal();
+      toast.success("Profile updated successfully");
+    } catch (err) {
+      toast.error("Failed to update profile");
+    }
   };
 
   return (
@@ -116,12 +162,10 @@ const ProfileForm = () => {
     bg-blue h-auto  max-h-[20rem] md:max-h-[15rem] lg:max-h-[20rem] w-full my-5 rounded-2xl px-2 py-4"
         >
           <Formik
+            enableReinitialize
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-              values.profilePic = preview; // Set the cropped image as the profilePic value
-              handleProfileUpdate(values);
-            }}
+            onSubmit={handleProfileUpdate}
           >
             {({ setFieldValue }) => (
               <Form>

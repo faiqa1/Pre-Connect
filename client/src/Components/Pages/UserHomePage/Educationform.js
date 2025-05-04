@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaPencil } from 'react-icons/fa6';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
 
 const Educationform = () => {
   const [showModal, setShowModal] = useState(false);
@@ -14,7 +15,34 @@ const Educationform = () => {
   });
   const [educations, setEducations] = useState([]); // List of all submitted educations
   const [errors, setErrors] = useState({});
+  const [universities, setUniversities] = useState([]); // For dropdown
   const modalRef = useRef(null); // Create a ref for the modal
+
+  // Fetch universities and user's educations on mount
+  useEffect(() => {
+    const fetchStaticData = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/static-data');
+        setUniversities(res.data.universities || []);
+      } catch (err) {
+        // fallback: do nothing
+      }
+    };
+    const fetchEducations = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const res = await axios.get('http://localhost:8080/api/profile/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = res.data.data || res.data;
+        setEducations(data.education || []);
+      } catch (err) {
+        // fallback: do nothing
+      }
+    };
+    fetchStaticData();
+    fetchEducations();
+  }, []);
 
   const validateForm = () => {
     let errors = {};
@@ -34,14 +62,30 @@ const Educationform = () => {
     return Object.keys(errors).length === 0; // Return true if no errors
   };
 
-  const onSubmit = (e) => {
+  // Submit to backend
+  const onSubmit = async (e) => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      // Add the new education to the list of educations
-      setEducations([...educations, formData]);
-      resetForm();
-      setShowModal(false);
+      try {
+        const token = localStorage.getItem('accessToken');
+        const payload = {
+          universityName: formData.universityName,
+          degreeName: formData.degreeName,
+          startDate: formData.startDate,
+          endDate: formData.currentlyStudying ? null : formData.endDate,
+          currentlyStudying: formData.currentlyStudying,
+        };
+        const res = await axios.post('http://localhost:8080/api/profile/education', payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Update educations list from response
+        setEducations(res.data.data.education || []);
+        resetForm();
+        setShowModal(false);
+      } catch (err) {
+        setErrors({ submit: 'Failed to add education' });
+      }
     }
   };
 
@@ -86,14 +130,14 @@ const Educationform = () => {
       </div>
 
       {educations.map((education, index) => (
-        <div className="mt-4" key={index}>
+        <div className="mt-4" key={education._id || index}>
           <p><strong>University Name:</strong> {education.universityName}</p>
           <p><strong>Degree Name:</strong> {education.degreeName}</p>
-          <p><strong>Start Date:</strong> {education.startDate.toLocaleDateString()}</p>
+          <p><strong>Start Date:</strong> {education.startDate ? new Date(education.startDate).toLocaleDateString() : ''}</p>
           {education.currentlyStudying ? (
             <p><strong>Present</strong></p>
           ) : (
-            <p><strong>End Date:</strong> {education.endDate.toLocaleDateString()}</p>
+            <p><strong>End Date:</strong> {education.endDate ? new Date(education.endDate).toLocaleDateString() : ''}</p>
           )}
         </div>
       ))}
@@ -107,14 +151,18 @@ const Educationform = () => {
               <form onSubmit={onSubmit}>
                 <div className="mb-4">
                   <label htmlFor="universityName" className="block font-bold mb-1">University Name</label>
-                  <input
+                  <select
                     id="universityName"
                     name="universityName"
-                    type="text"
                     className="form-input"
                     value={formData.universityName}
                     onChange={(e) => setFormData({ ...formData, universityName: e.target.value })}
-                  />
+                  >
+                    <option value="">Select University</option>
+                    {universities.map((uni) => (
+                      <option key={uni} value={uni}>{uni}</option>
+                    ))}
+                  </select>
                   {errors.universityName && <div className="text-red-500">{errors.universityName}</div>}
                 </div>
 
@@ -170,6 +218,8 @@ const Educationform = () => {
                     <span className="ml-2">Currently Studying</span>
                   </label>
                 </div>
+
+                {errors.submit && <div className="text-red-500">{errors.submit}</div>}
 
                 <div className="mt-6">
                   <button
