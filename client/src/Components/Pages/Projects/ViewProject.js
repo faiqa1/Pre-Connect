@@ -7,7 +7,7 @@ export default function ViewProject(){
   return (
     <div>
       <div className="jobWrapper w-full mx-auto bg-lightblue h-auto px-8 py-4 my-8">
-        <ul className="flex flex-col justify-center items-center ">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2  justify-center ">
           <li>
             <Link>
               <div className="jobCardWrapper py-4 ">

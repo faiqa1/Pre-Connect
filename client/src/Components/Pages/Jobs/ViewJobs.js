@@ -18,7 +18,7 @@ export default function ViewJobs() {
   return (
     <div>
     <div className="jobWrapper w-full px-8 mx-auto bg-lightblue h-auto py-4 my-8">
-      <ul className="flex flex-col justify-center items-center ">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2  justify-center ">
         <li>
           <Link>
             <div className="jobCardWrapper py-4 ">

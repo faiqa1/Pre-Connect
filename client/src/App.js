@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Blog from "./Components/Pages/Blog/Blog";
 import Signup from "./Components/Pages/Signup.js/Signup";
 import Layout from "./Components/Layout/Index";
-import HomePageLayout from "./Components/Layout/HomepageLayout";
 import BlogPage1 from "./Components/Pages/Blog/BlogPage1";
 import BlogPage2 from "./Components/Pages/Blog/BlogPage2";
 import BlogPage3 from "./Components/Pages/Blog/BlogPage3";
@@ -14,12 +13,14 @@ import BlogPage5 from "./Components/Pages/Blog/BlogPage5";
 import AllJobs from "./Components/Pages/Jobs&Companies/AllJobs";
 import FeaturedJobs from "./Components/Pages/HomePage/FeaturedJobs";
 import Companies from "./Components/Pages/HomePage/Companies";
-import UserHomePage from "./Components/Pages/UserHomePage/UserHomePage";
 import Profile from "./Components/Pages/UserHomePage/Profile";
 import Job from "./Components/Pages/Jobs/Job";
 import Project from "./Components/Pages/Projects/Project";
 import Notification from "./Components/Pages/Notifications/Notification";
 import Projectform from "./Components/Pages/Projects/Projectform";
+import { Navigate } from "react-router-dom";
+import UserHomePage from "./Components/Pages/UserHomePage/UserHomePage";
+import ProtectedRoute from "./Components/ProtectedRoutes";
 
 function App() {
   return (
@@ -106,44 +107,30 @@ function App() {
               </Layout>
             }
           />
-          <Route path="/userhomepage" element={<UserHomePage />} />
           <Route
             path="/loc"
             element={
               <Layout>
-                {" "}
-                <Location />{" "}
+                <Location />
               </Layout>
             }
           />
-          <Route
-            path="profile"
-            element={
-              <HomePageLayout>
-                <Profile />
-              </HomePageLayout>
-            }
-          />
-          <Route path="/job"
-            element={
-              <HomePageLayout>
-                <Job />
-              </HomePageLayout>
-            } />
-             <Route path="/projects"
-            element={
-              <HomePageLayout>
-                <Project/>
-              </HomePageLayout>
-            } />
-             <Route path="/notification"
-            element={
-              <HomePageLayout>
-                <Notification/>
-              </HomePageLayout>
-            } />
           <Route path="/signup" element={<Signup />} />
+          {/* <Route path="homepage" element={<UserHomePage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/job" element={<Job />} />
+          <Route path="/projects" element={<Project />} />
+          <Route path="/notification" element={<Notification />} /> */}
+
+          <Route element={<ProtectedRoute/>}> 
+          <Route path="homepage" element={<UserHomePage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/job" element={<Job />} />
+          <Route path="/projects" element={<Project />} />
+          <Route path="/notification" element={<Notification />} />
           <Route path="/projectform" element={<Projectform />} />
+          </Route>
+          {/* <Route path="/projectform" element={<Projectform />} /> */}
         </Routes>
       </BrowserRouter>
     </>
