@@ -1,19 +1,19 @@
 import React from "react";
 import newsletter from "../../../Images/newsletter.png";
-export default function () {
+export default function NewsLetter() {
   return (
     <div
       className="newsWrapper my-10 w-10/12 mx-10
     max-h-[40rem] md:max-h-[20rem] lg:max-h-[40rem] py-5 "
     >
       <div className="newsLetterHeading text-center">
-        <h2 className="text-black font-extrabold text-4xl">Stay up to date</h2>
+        <h2 className="text-black font-extrabold text-4xl">Stay up to date!!!</h2>
         <p className="text-gray-500 py-5">
           Subscribe to our newsletter to receive our weekly feed.
         </p>
       </div>
       <div className="flex justify-center">
-        <img src={newsletter} className="w-[30%]  " />
+        <img src={newsletter} className="w-[30%]  " alt="newsletter " />
       </div>
       <div className="flex justify-center">
         <form>

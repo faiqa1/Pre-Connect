@@ -1,7 +1,5 @@
 import React from "react";
 import ViewJobs from "./ViewJobs";
-import CreateJob from "./CreateJob";
-import SeekGuidance from "./SeekGuidance";
 import UserHeader from "../UserHomePage/UserHeader";
 export default function Job() {
   return(

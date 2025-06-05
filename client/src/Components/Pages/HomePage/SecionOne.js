@@ -1,5 +1,5 @@
 import React from "react";
-import { FaGithub, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+// import { FaGithub, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import laptop from '../../../Images/manOnLaptop.jpeg'
 import { Link } from "react-router-dom";
@@ -25,7 +25,7 @@ export default function SecionOne() {
           </button>
         </div>
         <div className="bannerImage flex ">
-        <img className="w-[80%] h-full object-cover opacity-17" src={laptop} />
+        <img className="w-[80%] h-full object-cover opacity-17" alt="laptop img" src={laptop} />
         </div>
         </div>
       </div>

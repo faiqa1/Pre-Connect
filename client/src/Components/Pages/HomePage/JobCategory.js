@@ -9,7 +9,7 @@ import { FaChartLine } from "react-icons/fa";
 import { FaRegAddressCard } from "react-icons/fa";
 import { FaRegCalendar } from "react-icons/fa";
 import { FaTerminal } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const responsive = {
   superLargeDesktop: {

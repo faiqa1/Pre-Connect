@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export default function CreatePost() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [content, setContent] = useState("");
 
   const handleInputClick = () => {
     setIsModalOpen(true);
@@ -13,13 +16,13 @@ export default function CreatePost() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle the form submission logic here
-    setIsModalOpen(false); // Close the modal after submission
+    console.log("Post content:", content);
+    // You will send `content` to the backend here
+    setIsModalOpen(false);
   };
 
   return (
-    <div className="postformWrapper flex w-full justify-center 
-    bg-[#0969c3] h-[5rem] items-center mx-auto my-5 rounded-xl">
+    <div className="postformWrapper flex w-full justify-center bg-[#0969c3] h-[5rem] items-center mx-auto my-5 rounded-xl">
       <form action="POST">
         <input
           type="text"
@@ -36,11 +39,11 @@ export default function CreatePost() {
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-xl mb-4">Create a Post</h2>
             <form onSubmit={handleSubmit}>
-              <textarea
-                name="postContent"
-                placeholder="Write your post here..."
-                className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-                rows="5"
+              <ReactQuill
+                value={content}
+                onChange={setContent}
+                className="mb-4"
+                theme="snow"
               />
               <div className="flex justify-end">
                 <button
