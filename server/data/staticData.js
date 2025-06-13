@@ -1,64 +1,49 @@
 const universities = [
-  "Harvard University",
-  "Stanford University",
-  "Massachusetts Institute of Technology (MIT)",
-  "University of California, Berkeley",
-  "University of Cambridge",
-  "University of Oxford",
-  "California Institute of Technology (Caltech)",
-  "University of Toronto",
-  "University of British Columbia",
-  "McGill University",
-  "University of Waterloo",
-  "University of Alberta",
-  "University of Montreal",
-  "University of Victoria",
-  "Simon Fraser University"
+  "National University of Sciences and Technology (NUST)",
+  "Lahore University of Management Sciences (LUMS)",
+  "University of the Punjab",
+  "COMSATS University Islamabad",
+  "University of Engineering and Technology (UET) Lahore",
+  "FAST National University of Computer and Emerging Sciences",
+  "International Islamic University, Islamabad",
+  "Bahria University",
+  "Air University",
+  "University of Karachi",
+  "NED University of Engineering and Technology",
+  "Iqra University",
+  "Institute of Business Administration (IBA) Karachi",
+  "University of Lahore",
+  "Lahore College for Women University (LCWU)"
 ];
 
 const companies = [
-  "Google",
-  "Microsoft",
-  "Apple",
-  "Amazon",
-  "Meta (Facebook)",
-  "Netflix",
-  "Tesla",
-  "IBM",
-  "Intel",
-  "Adobe",
-  "Salesforce",
-  "Oracle",
-  "Cisco",
-  "Twitter",
-  "LinkedIn",
-  "Shopify",
-  "Uber",
-  "Airbnb",
-  "Spotify",
-  "Slack"
+  "Systems Limited",
+  "NetSol Technologies",
+  "10Pearls",
+  "Techlogix",
+  "Arbisoft",
+  "VentureDive",
+  "TRG Pakistan",
+  "Ovex Technologies",
+  "Cubix",
+  "Confiz",
+  "Tkxel",
+  "Programmers Force",
+  "Mindstorm Studios",
+  "Contour Software",
+  "DevBatch"
 ];
 
 const positions = [
-  "Software Engineer",
-  "Senior Software Engineer",
-  "Software Developer",
-  "Full Stack Developer",
-  "Frontend Developer",
-  "Backend Developer",
-  "DevOps Engineer",
-  "Data Scientist",
-  "Machine Learning Engineer",
-  "Product Manager",
-  "Project Manager",
-  "Technical Lead",
-  "Engineering Manager",
-  "CTO",
-  "CEO"
+  "Associate Software Engineer",
+  "Junior Software Engineer",
+  "Junior MERN Stack Developer",
+  "Trainee Software Engineer",
+  "Intern Software Developer"
 ];
 
 module.exports = {
   universities,
   companies,
   positions
-}; 
+};

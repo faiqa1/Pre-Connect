@@ -64,7 +64,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User data is not valid");
   }
 
-  // ✅ Generate token
   const accessToken = jwt.sign(
     {
       user: {
@@ -77,7 +76,6 @@ const registerUser = asyncHandler(async (req, res) => {
     { expiresIn: "10m" }
   );
 
-  // ✅ Send only this response
   res.status(201).json({ accessToken });
 });
 
