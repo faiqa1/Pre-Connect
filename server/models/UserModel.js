@@ -4,16 +4,16 @@ const userSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Please enter username"],
+      required: [true, "Please enter your username"],
     },
     email: {
       type: String,
-      required: [true, "Please enter email address"],
-      unique: [true, "Email already taken"],
+      required: [true, "Please enter your email address"],
+      unique: [true, "Email already exist"],
     },
     password: {
       type: String,
-      required: [true, "Please enter  password"],
+      required: [true, "Please enter your password"],
     },
     headline: {
       type: String,
@@ -38,15 +38,15 @@ const userSchema = mongoose.Schema(
     education: [{
       universityName: { 
         type: String, 
-        required: [true, "Please enter university name"] 
+        required: [true, "Please enter your university name"] 
       },
       degreeName: { 
         type: String, 
-        required: [true, "Please enter degree name"] 
+        required: [true, "Please enter your degree name"] 
       },
       startDate: { 
         type: Date, 
-        required: [true, "Please enter start date"] 
+        required: [true, "Please enter your start date"] 
       },
       endDate: { 
         type: Date 
@@ -60,15 +60,15 @@ const userSchema = mongoose.Schema(
     experience: [{
       companyName: { 
         type: String, 
-        required: [true, "Please enter company name"] 
+        required: [true, "Please enter your company name"] 
       },
       position: { 
         type: String, 
-        required: [true, "Please enter position"] 
+        required: [true, "Please enter your position"] 
       },
       startDate: { 
         type: Date, 
-        required: [true, "Please enter start date"] 
+        required: [true, "Please enter your start date"] 
       },
       endDate: { 
         type: Date 
